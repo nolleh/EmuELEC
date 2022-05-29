@@ -2,8 +2,8 @@
 # Copyright (C) 2019-present Shanti Gilbert (https://github.com/shantigilbert)
 
 PKG_NAME="emuelec-32bit-libs"
-PKG_VERSION="88344eab31df66df0bbe3e891e7bdae5d26fe416"
-PKG_SHA256="6e51c38419b432bcfdcd3f23c7b8259859d22f03bd58c25ba5c3b923d7686ada"
+PKG_VERSION="7b99aab2e1e7155f2a44630c758908be10d8c6f8"
+PKG_SHA256="959413aa14b1af6056fd8fc4f7791f81ac1f300820fc887b14e73c08b176eafe"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPLv2"
@@ -34,4 +34,7 @@ fi
 mkdir -p $INSTALL/usr/lib
 ln -sf /emuelec/lib32 $INSTALL/usr/lib/arm-linux-gnueabihf
 ln -sf /emuelec/lib32/ld-2.32.so $INSTALL/usr/lib/ld-linux-armhf.so.3
+
+mkdir -p ${INSTALL}/usr/lib/libretro
+cp ${PKG_DIR}/infos/*.info ${INSTALL}/usr/lib/libretro/
 }

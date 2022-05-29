@@ -2,8 +2,8 @@
 # Copyright (C) 2021-present Shanti Gilbert (https://github.com/shantigilbert)
 
 PKG_NAME="pcsx_rearmed"
-PKG_VERSION="75d5614bce62f7c2b3ca196574cf28bc9d050cdb"
-PKG_SHA256="c8eedaafa1977d1f6d429541681bbf133c9e8aa04e09c7015bf582cc4e146ab5"
+PKG_VERSION="e24732050e902bd5402b2b7da7c391d2ca8fa799"
+PKG_SHA256="96b933eb2877ff224b3b00af0e9f4f3560d3d0b1c0bb18f67060e7e5598c1757"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPLv2"
@@ -16,6 +16,7 @@ PKG_BUILD_FLAGS="+speed -gold"
 
 make_target() {
 cd ${PKG_BUILD}
+export ALLOW_LIGHTREC_ON_ARM=1
 if [ "${ARCH}" == "arm" ]; then
 	if [ "${DEVICE}" == "Amlogic" ]; then
 		make -f Makefile.libretro GIT_VERSION=${PKG_VERSION} platform=rpi3

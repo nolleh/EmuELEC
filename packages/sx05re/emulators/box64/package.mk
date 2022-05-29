@@ -2,7 +2,7 @@
 # Copyright (C) 2021-present Shanti Gilbert (https://github.com/shantigilbert)
 
 PKG_NAME="box64"
-PKG_VERSION="40c58241eac0603b87847ec60ac1ea2870e101ac"
+PKG_VERSION="8d9d5f3fc3da7356c71d98b0380b81293a486bba"
 PKG_REV="1"
 PKG_ARCH="aarch64"
 PKG_LICENSE="MIT"
@@ -17,6 +17,13 @@ if [[ "${DEVICE}" == "Amlogic"* ]]; then
 else
 	PKG_CMAKE_OPTS_TARGET=" -DRK3326=1 -DCMAKE_BUILD_TYPE=RelWithDebInfo"
 fi
+
+pre_configure_target() {
+# https://github.com/ptitSeb/box64/issues/256
+if ! grep -q "as-needed" ${PKG_BUILD}/CMakeLists.txt; then
+	sed -i "s|as-need|as-needed|g" ${PKG_BUILD}/CMakeLists.txt
+fi
+}
 
 makeinstall_target() {
   mkdir -p $INSTALL/usr/config/emuelec/bin/box64/lib

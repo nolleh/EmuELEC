@@ -17,7 +17,7 @@ PKG_AUTORECONF="no"
 PKG_TOOLCHAIN="make"
 PKG_NEED_UNPACK="$(get_pkg_directory busybox)"
 
-PKG_EXPERIMENTAL="munt nestopiaCV quasi88 xmil np2kai hypseus-singe dosbox-x yabasanshiroSA fbneoSA"
+PKG_EXPERIMENTAL="munt nestopiaCV quasi88 xmil np2kai hypseus-singe yabasanshiroSA fbneoSA"
 PKG_EMUS="$LIBRETRO_CORES advancemame PPSSPPSDL amiberry hatarisa openbor dosbox-staging mupen64plus-nx mupen64plus-nx-alt scummvmsa stellasa solarus dosbox-pure pcsx_rearmed ecwolf potator freej2me duckstation flycastsa fmsx-libretro jzintv mupen64plussa"
 PKG_TOOLS="emuelec-tools"
 PKG_DEPENDS_TARGET+=" $PKG_TOOLS $PKG_EMUS $PKG_EXPERIMENTAL emuelec-ports"
@@ -26,7 +26,7 @@ PKG_DEPENDS_TARGET+=" $PKG_TOOLS $PKG_EMUS $PKG_EXPERIMENTAL emuelec-ports"
 # PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET mame2015 fba4arm mba.mini.plus $LIBRETRO_EXTRA_CORES xow"
 
 # These packages are only meant for S922x, S905x2 and A311D devices as they run poorly on S905" 
-if [ "${DEVICE}" == "Amlogic-ng" ] || [ "$DEVICE" == "RK356x" ]; then
+if [ "${DEVICE}" == "Amlogic-ng" ] || [ "$DEVICE" == "RK356x" ] || [ "$DEVICE" == "OdroidM1" ]; then
 PKG_DEPENDS_TARGET+=" $LIBRETRO_S922X_CORES mame2016"
 fi
 
@@ -50,7 +50,7 @@ for discore in munt_neon quicknes parallel-n64 pcsx_rearmed; do
 	
 PKG_DEPENDS_TARGET+=" swanstation emuelec-32bit-libs"
 
-if [ "${DEVICE}" == "Amlogic-ng" ] || [ "$DEVICE" == "RK356x" ]; then
+if [ "${DEVICE}" == "Amlogic-ng" ] || [ "$DEVICE" == "RK356x" ] || [ "$DEVICE" == "OdroidM1" ]; then
 	PKG_DEPENDS_TARGET+=" dolphinSA"
 fi
 
@@ -84,13 +84,6 @@ makeinstall_target() {
     
     find $INSTALL/usr/config/emuelec/ -type f -exec chmod o+x {} \;
     
-    if [ "${DEVICE}" == "Amlogic" ]; then 
-        rm $INSTALL/usr/config/asound.conf-amlogic-ng
-    else
-        rm $INSTALL/usr/config/asound.conf
-        mv $INSTALL/usr/config/asound.conf-amlogic-ng $INSTALL/usr/config/asound.conf
-    fi 
-  
 	mkdir -p $INSTALL/usr/config/emuelec/logs
 	ln -sf /var/log $INSTALL/usr/config/emuelec/logs/var-log
     
