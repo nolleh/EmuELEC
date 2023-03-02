@@ -3,9 +3,9 @@
 
 PKG_NAME="rustc-snapshot"
 PKG_VERSION="$(get_pkg_version rust)"
-PKG_SHA256="21c4613f389ed130fbaaf88f1e984319f72b5fc10734569a5ba19e22ebb03abd"
+PKG_SHA256="242855e2626860aede6957dc56481cc02acf8cad12fa5bbbcbd93f9c51f0b3ad"
 PKG_LICENSE="MIT"
 PKG_SITE="https://www.rust-lang.org"
-PKG_URL="https://static.rust-lang.org/dist/rustc-${PKG_VERSION}-${MACHINE_HARDWARE_CPU}-unknown-linux-gnu.tar.xz"
+PKG_URL="https://static.rust-lang.org/dist/rustc-${PKG_VERSION}-${MACHINE_HARDWARE_NAME}-unknown-linux-gnu.tar.xz"
 PKG_LONGDESC="rustc bootstrap compiler"
 PKG_TOOLCHAIN="manual"

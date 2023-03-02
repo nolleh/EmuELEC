@@ -3,8 +3,8 @@
 # Copyright (C) 2018-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="libass"
-PKG_VERSION="0.15.2"
-PKG_SHA256="1be2df9c4485a57d78bb18c0a8ed157bc87a5a8dd48c661961c625cb112832fd"
+PKG_VERSION="0.17.0"
+PKG_SHA256="971e2e1db59d440f88516dcd1187108419a370e64863f70687da599fdf66cc1a"
 PKG_LICENSE="BSD"
 PKG_SITE="https://github.com/libass/libass"
 PKG_URL="https://github.com/libass/libass/releases/download/${PKG_VERSION}/${PKG_NAME}-${PKG_VERSION}.tar.xz"
@@ -13,6 +13,7 @@ PKG_LONGDESC="A portable subtitle renderer for the ASS/SSA (Advanced Substation 
 
 PKG_CONFIGURE_OPTS_TARGET="--disable-test \
                            --enable-fontconfig \
+                           --disable-libunibreak \
                            --disable-silent-rules \
                            --with-gnu-ld"
 

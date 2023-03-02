@@ -2,7 +2,7 @@
 # Copyright (C) 2019-present Shanti Gilbert (https://github.com/shantigilbert)
 
 PKG_NAME="emuelec-emulationstation"
-PKG_VERSION="55c48bb8d59ee80baa8725e34290658b9f6d0147"
+PKG_VERSION="328e8ae39fc14f28e3d44163ed7c3e0d2c056a12"
 PKG_GIT_CLONE_BRANCH="EmuELEC"
 PKG_REV="1"
 PKG_ARCH="any"
@@ -11,7 +11,7 @@ PKG_SITE="https://github.com/EmuELEC/emuelec-emulationstation"
 PKG_URL="$PKG_SITE.git"
 PKG_DEPENDS_TARGET="toolchain SDL2 freetype curl freeimage vlc bash rapidjson ${OPENGLES} SDL2_mixer fping p7zip"
 PKG_SECTION="emuelec"
-PKG_NEED_UNPACK="busybox"
+PKG_NEED_UNPACK="$(get_pkg_directory busybox) $(get_pkg_directory bash)"
 PKG_SHORTDESC="Emulationstation emulator frontend"
 PKG_BUILD_FLAGS="-gold"
 GET_HANDLER_SUPPORT="git"
@@ -106,6 +106,8 @@ if [ "${DEVICE}" != "Amlogic-ng" ]; then
     elif [ "${DEVICE}" == "Amlogic-old" ]; then
         remove_cores="mesen-s quicknes mame2016 mesen yabasanshiroSA yabasanshiro"
         xmlstarlet ed -L -P -d "/systemList/system[name='saturn']" ${CORESFILE}
+        xmlstarlet ed -L -P -d "/systemList/system[name='phillips-cdi']" ${CORESFILE}
+        xmlstarlet ed -L -P -d "/systemList/system/emulators/emulator[@name='Duckstation']" ${CORESFILE}
     fi
     
     for discore in ${remove_cores}; do
@@ -130,9 +132,9 @@ fi
 
 post_install() {  
 	enable_service emustation.service
-	enable_service bluetooth-agent.service
 	mkdir -p ${INSTALL}/usr/share
 	ln -sf /storage/.config/emuelec/configs/locale ${INSTALL}/usr/share/locale
 	mkdir -p ${INSTALL}/usr/bin/batocera/
 	ln -sf /usr/bin/7zr ${INSTALL}/usr/bin/batocera/7zr
+	ln -sf /usr/bin/bash ${INSTALL}/usr/bin/sh
 }

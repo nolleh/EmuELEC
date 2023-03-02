@@ -2,8 +2,8 @@
 # Copyright (C) 2019-present Shanti Gilbert (https://github.com/shantigilbert)
 
 PKG_NAME="scummvmsa"
-PKG_VERSION="8246de716a09ae12eeccea844d355ca5be92a30c"
-PKG_SHA256="2170eb4cf411ada8f58b41f029893a8f4d38338771eea2f02ec6389156e3fb48"
+PKG_VERSION="d722f6ab1630c296793f81dbe835db2a2ab17ee5"
+PKG_SHA256="5f5e671886ffb09199f74ea39284dc6fe509ed7687898291ea389eb42730978f"
 PKG_REV="1"
 PKG_LICENSE="GPL2"
 PKG_SITE="https://github.com/scummvm/scummvm"
@@ -13,7 +13,6 @@ PKG_SHORTDESC="Script Creation Utility for Maniac Mansion Virtual Machine"
 PKG_LONGDESC="ScummVM is a program which allows you to run certain classic graphical point-and-click adventure games, provided you already have their data files."
 
 pre_configure_target() { 
-sed -i "s|sdl-config|sdl2-config|g" $PKG_BUILD/configure
 TARGET_CONFIGURE_OPTS="--host=${TARGET_NAME} --backend=sdl --enable-vkeybd --enable-optimizations --opengl-mode=gles2 --with-sdl-prefix=${SYSROOT_PREFIX}/usr/bin"
 }
 

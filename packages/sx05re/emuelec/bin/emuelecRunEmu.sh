@@ -8,6 +8,8 @@
 
 # This whole file has become very hacky, I am sure there is a better way to do all of this, but for now, this works.
 
+blank_buffer
+
 if [ -f "/usr/bin/odroidgoa_utils.sh" ]; then
     DEFBRIGHT=$(get_ee_setting brightness.level)
     RACONF=/storage/.config/retroarch/retroarch.cfg
@@ -62,6 +64,7 @@ set_kill_keys() {
     # If gptokeyb is running we kill it first. 
     kill_video_controls
     KILLTHIS=${1}
+    KILLSIGNAL=${2}
 }
 
 # Extract the platform name from the arguments
@@ -78,29 +81,31 @@ ROMNAME="$1"
 BASEROMNAME=${ROMNAME##*/}
 GAMEFOLDER="${ROMNAME//${BASEROMNAME}}"
 
-[ -f "/emuelec/bin/setres.sh" ] && SET_DISPLAY_SH="/emuelec/bin/setres.sh" || SET_DISPLAY_SH="/usr/bin/setres.sh"
+SET_DISPLAY_SH="setres.sh"
 VIDEO="$(cat /sys/class/display/mode)"
 VIDEO_EMU=$(get_ee_setting nativevideo "${PLATFORM}" "${BASEROMNAME}")
 
 if [[ "${CORE}" == *"_32b"* ]]; then
     BIT32="yes"
-    LD_LIBRARY_PATH="/emuelec/lib32:$LD_LIBRARY_PATH"
+    #LD_LIBRARY_PATH="/emuelec/lib32:$LD_LIBRARY_PATH"
     RABIN="retroarch32"
 else
     BIT32="No"
 fi
 
 if [[ "${EMULATOR}" = "libretro" ]]; then
-	EMU="${CORE}_libretro"
-	LIBRETRO="yes"
+    [[ -f "/storage/.config/RA_KILL_KEYS" ]] && set_kill_keys "$RABIN"
+    EMU="${CORE}_libretro"
+    LIBRETRO="yes"
     RETRORUN=""
 else
 	EMU="${CORE}"
 fi
 
 if [[ "${EMULATOR}" = "retrorun" ]]; then
+    [[ -f "/storage/.config/RA_KILL_KEYS" ]] && set_kill_keys "retrorun"
     EMU="${CORE}_libretro"
-	RETRORUN="yes"
+    RETRORUN="yes"
     LIBRETRO=""
 fi
 
@@ -119,6 +124,7 @@ fi
 [[ ${PLATFORM} = "ports" ]] && LIBRETRO="yes"
 
 KILLTHIS="none"
+KILLSIGNAL="15"
 
 # if there wasn't a --NOLOG included in the arguments, enable the emulator log output. TODO: this should be handled in ES menu
 if [[ $arguments != *"--NOLOG"* ]]; then
@@ -126,15 +132,21 @@ if [[ $arguments != *"--NOLOG"* ]]; then
     VERBOSE="-v"
 fi
 
-# Set the display video to that of the emulator setting.
-[ ! -z "$VIDEO_EMU" ] && $TBASH $SET_DISPLAY_SH $VIDEO_EMU # set display
+# Get the latest save files if there is any
+CLOUD_SYNC=$(get_ee_setting "${PLATFORM}.cloudsave")
+[[ "$CLOUD_SYNC" == "1" ]] && ra_rclone.sh get "${PLATFORM}" "${ROMNAME}" &
+CLOUD_PID=$!
 
 # Show splash screen if enabled
 SPL=$(get_ee_setting ee_splash.enabled)
-[ "$SPL" -eq "1" ] && ${TBASH} show_splash.sh "$PLATFORM" "${ROMNAME}"
+[ "$SPL" -eq "1" ] && ${TBASH} show_splash.sh gameloading "$PLATFORM" "${ROMNAME}"
 
-# Only run fbfix on Amlogic-ng (Mali g31 and g52 in Amlogic SOC)
-[[ "$EE_DEVICE" == "Amlogic-ng" ]] && fbfix
+# Set the display video to that of the emulator setting.
+[ ! -z "$VIDEO_EMU" ] && $TBASH $SET_DISPLAY_SH $VIDEO_EMU $PLATFORM # set display
+
+
+CONTROLLERCONFIG="${arguments#*--controllers=*}"
+echo "${CONTROLLERCONFIG}" | tr -d '"' > "/tmp/controllerconfig.txt"
 
 if [ -z ${LIBRETRO} ] && [ -z ${RETRORUN} ]; then
 
@@ -179,7 +191,7 @@ case ${PLATFORM} in
 		;;
 	"mame"|"arcade"|"cps1"|"cps2"|"cps3")
 		if [ "$EMU" = "AdvanceMame" ]; then
-            set_kill_keys "advmame"
+            set_kill_keys "advmame" 3
             RUNTHIS='${TBASH} advmame.sh "${ROMNAME}"'
 		elif [ "$EMU" = "FbneoSA" ]; then
             set_kill_keys "fbneo"
@@ -431,9 +443,9 @@ if [ "$(get_es_setting string LogLevel)" != "minimal" ]; then # No need to do al
     eval echo ${RUNTHIS} >> $EMUELECLOG
 fi
 
-if [[ "${KILLTHIS}" != "none" ]]; then
-    gptokeyb 1 ${KILLTHIS} &
-fi
+gptokeyb 1 ${KILLTHIS} -killsignal ${KILLSIGNAL} &
+
+[[ "$CLOUD_SYNC" == "1" ]] && wait $CLOUD_PID
 
 # Execute the command and try to output the results to the log file if it was not disabled.
 if [[ $LOGEMU == "Yes" ]]; then
@@ -444,7 +456,11 @@ else
    echo "Emulator log was dissabled" >> $EMUELECLOG
    eval ${RUNTHIS} > /dev/null 2>&1
    ret_error=$?
-fi 
+fi
+
+blank_buffer
+
+[[ "$CLOUD_SYNC" == "1" ]] && ra_rclone.sh set "${PLATFORM}" "${ROMNAME}" &
 
 # clear terminal window
 	reset > /dev/tty < /dev/null 2>&1
@@ -454,9 +470,6 @@ fi
 
 # Return to default mode
 $TBASH $SET_DISPLAY_SH $VIDEO
-
-# Only run fbfix on Amlogic-ng (Mali g31 and g52 in Amlogic SOC)
-[[ "$EE_DEVICE" == "Amlogic-ng" ]] && fbfix
 
 # Show exit splash
 ${TBASH} show_splash.sh exit
@@ -473,9 +486,6 @@ fi
 
 # reset audio to default
 set_audio default
-
-# remove emu.cfg if platform was reicast
-[ -f /storage/.config/reicast/emu.cfg ] && rm /storage/.config/reicast/emu.cfg
 
 if [[ "$BTENABLED" == "1" ]]; then
 	# Restart the bluetooth agent
@@ -519,6 +529,8 @@ fi
 # Temp fix for libretro scummvm always erroing out on exit
 [[ "${EMU}" == *"scummvm_libretro"* ]] && ret_error=0
 
+[[ "$CLOUD_SYNC" == "1" ]] && wait $CLOUD_PID
+
 if [[ "$ret_error" != "0" ]]; then
     echo "exit $ret_error" >> $EMUELECLOG
     ret_bios=0
@@ -539,8 +551,10 @@ if [[ "$ret_error" != "0" ]]; then
 
     # Since the error was not because of missing BIOS but we did get an error, display the log to find out
     [[ "$ret_bios" == "0" ]] && text_viewer -e -w -t "Error! ${PLATFORM}-${EMULATOR}-${CORE}-${ROMNAME}" -f 24 ${EMUELECLOG}
+    blank_buffer
     exit 1
 else
     echo "exit 0" >> $EMUELECLOG
+    blank_buffer
     exit 0
 fi

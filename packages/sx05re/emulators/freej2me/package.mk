@@ -2,8 +2,8 @@
 # Copyright (C) 2021-present Shanti Gilbert (https://github.com/shantigilbert)
 
 PKG_NAME="freej2me"
-PKG_VERSION="165d4d58c234b3c1fea08297561b782cd09050c4"
-PKG_SHA256="72d42c212134fa5da8a5d8ecc11a09d741e067794da559838d5c21c85efc9778"
+PKG_VERSION="40d1ac9c61c04fa96b90e117f99a2c494798806c"
+PKG_SHA256="65197ddfc7fedd78bf92501567b6ae3946f92192c461d60c3797d9938692f374"
 PKG_ARCH="any"
 PKG_SITE="https://github.com/hex007/freej2me"
 PKG_URL="$PKG_SITE/archive/$PKG_VERSION.tar.gz"

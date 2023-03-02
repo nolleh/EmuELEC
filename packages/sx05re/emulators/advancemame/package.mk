@@ -2,15 +2,15 @@
 # Copyright (C) 2019-present Shanti Gilbert (https://github.com/shantigilbert)
 
 PKG_NAME="advancemame"
-PKG_VERSION="384e646234d17b01f89a0e3b38cfdea770d1a1d2"
-PKG_SHA256="a15293ee964b951ae2f37886796ee1a7b1d14361202985e8e5644a7af170a541"
+PKG_VERSION="df51a73aad83b9a6e04fb747bd29de3204887ff7"
+PKG_SHA256="02709a2f7ab64d16024bd7d763d5f3b653938fd42d023dfb3732b00ee1c78d8b"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="MAME"
 PKG_SITE="https://github.com/amadvance/advancemame"
 PKG_URL="https://github.com/amadvance/advancemame/archive/${PKG_VERSION}.tar.gz"
 PKG_SOURCE_DIR="advancemame-${PKG_VERSION}*"
-PKG_DEPENDS_TARGET="toolchain freetype slang alsa"
+PKG_DEPENDS_TARGET="toolchain freetype slang alsa SDL2"
 PKG_SECTION="emuelec/mod"
 PKG_SHORTDESC="A MAME and MESS port with an advanced video support for Arcade Monitors, TVs, and PC Monitors "
 PKG_LONGDESC="A MAME and MESS port with an advanced video support for Arcade Monitors, TVs, and PC Monitors "

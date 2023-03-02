@@ -3,8 +3,8 @@
 # Copyright (C) 2018-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="util-linux"
-PKG_VERSION="2.38"
-PKG_SHA256="6d111cbe4d55b336db2f1fbeffbc65b89908704c01136371d32aa9bec373eb64"
+PKG_VERSION="2.38.1"
+PKG_SHA256="60492a19b44e6cf9a3ddff68325b333b8b52b6c59ce3ebd6a0ecaa4c5117e84f"
 PKG_LICENSE="GPL"
 PKG_URL="https://www.kernel.org/pub/linux/utils/util-linux/v$(get_pkg_version_maj_min)/${PKG_NAME}-${PKG_VERSION}.tar.xz"
 PKG_DEPENDS_HOST="ccache:host autoconf:host automake:host intltool:host libtool:host pkg-config:host"
@@ -55,7 +55,7 @@ PKG_CONFIGURE_OPTS_TARGET="${UTILLINUX_CONFIG_DEFAULT} \
                            --enable-fstrim \
                            --enable-blkid \
                            --enable-lsfd \
-                           --enable-setterm \
+                           --disable-setterm \
                            --with-ncursesw"
 
 if [ "${SWAP_SUPPORT}" = "yes" ]; then
@@ -78,11 +78,6 @@ PKG_CONFIGURE_OPTS_INIT="${UTILLINUX_CONFIG_DEFAULT} \
 if [ "${INITRAMFS_PARTED_SUPPORT}" = "yes" ]; then
   PKG_CONFIGURE_OPTS_INIT+=" --enable-mkfs --enable-libuuid"
 fi
-
-pre_makeinstall_target() {
-mkdir -p $INSTALL/usr/bin
-cp $PKG_BUILD/.$TARGET_NAME/setterm $INSTALL/usr/bin
-}
 
 post_makeinstall_target() {
   if [ "${SWAP_SUPPORT}" = "yes" ]; then

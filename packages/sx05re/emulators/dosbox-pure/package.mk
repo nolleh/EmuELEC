@@ -2,7 +2,7 @@
 # Copyright (C) 2020-present Shanti Gilbert (https://github.com/shantigilbert)
 
 PKG_NAME="dosbox-pure"
-PKG_VERSION="bcf8e4698e4cb651f3683c8889c593a3dbd953d3"
+PKG_VERSION="035e01e43623f83a9e71f362364fd74091379455"
 PKG_LICENSE="GPLv2"
 PKG_SITE="https://github.com/schellingb/dosbox-pure"
 PKG_URL="$PKG_SITE.git"
@@ -16,7 +16,7 @@ pre_configure_target() {
 
 if [ "${DEVICE}" == "Amlogic-old" ]; then
 	PKG_MAKE_OPTS_TARGET=" platform=emuelec"
-elif [ "${DEVICE}" == "Amlogic-ng" ]; then
+elif [ "${DEVICE}" = "Amlogic-ng" || "${DEVICE}" == "Amlogic-ogu" ]; then
 	PKG_MAKE_OPTS_TARGET=" platform=emuelec-ng"
 else
 	PKG_MAKE_OPTS_TARGET=" platform=emuelec-hh"

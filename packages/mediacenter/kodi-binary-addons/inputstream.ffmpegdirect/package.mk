@@ -2,14 +2,14 @@
 # Copyright (C) 2020-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="inputstream.ffmpegdirect"
-PKG_VERSION="20.2.1-Nexus"
-PKG_SHA256="224d0d1a043a48c41b4fe35ade10f95ecb66a2f8778511016cffd8441a977a1d"
-PKG_REV="1"
+PKG_VERSION="20.5.0-Nexus"
+PKG_SHA256="a849b6b4d5ce740ec3552d244acc4c7a4d64792358428f5154236052473d5734"
+PKG_REV="3"
 PKG_ARCH="any"
 PKG_LICENSE="GPL2+"
 PKG_SITE="https://github.com/xbmc/inputstream.ffmpegdirect"
 PKG_URL="https://github.com/xbmc/inputstream.ffmpegdirect/archive/${PKG_VERSION}.tar.gz"
-PKG_DEPENDS_TARGET="toolchain kodi-platform bzip2 ffmpeg gmp gnutls libpng libxml2 nettle xz zlib zvbi"
+PKG_DEPENDS_TARGET="toolchain kodi-platform bzip2 ffmpeg gmp libpng libxml2 xz zlib zvbi"
 PKG_SECTION=""
 PKG_SHORTDESC="inputstream.ffmpegdirect"
 PKG_LONGDESC="InputStream Client for streams that can be opened by FFmpeg's libavformat such as plain TS, HLS and DASH (without DRM) streams."

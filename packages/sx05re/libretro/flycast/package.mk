@@ -19,7 +19,8 @@
 ################################################################################
 
 PKG_NAME="flycast"
-PKG_VERSION="05961ac8837da2299383c2fdd55ad4fff44f758d"
+PKG_VERSION="$(get_pkg_version flycastsa)"
+PKG_NEED_UNPACK="$(get_pkg_directory flycastsa)"
 PKG_ARCH="any"
 PKG_LICENSE="GPLv2"
 PKG_SITE="https://github.com/flyinghead/flycast"
@@ -32,7 +33,8 @@ PKG_TOOLCHAIN="cmake"
 PKG_CMAKE_OPTS_TARGET="-DLIBRETRO=ON \
                         -DUSE_OPENMP=OFF \ 
                         -DCMAKE_BUILD_TYPE=Release \
-                        -DUSE_GLES2=ON"
+                        -DUSE_GLES2=OFF \
+                        -DUSE_GLES=ON"
 
 pre_make_target() {
   find $PKG_BUILD -name flags.make -exec sed -i "s:isystem :I:g" \{} \;

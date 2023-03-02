@@ -7,7 +7,7 @@ PKG_SHA256="af45411e7b4a24b91f267cf2281c63df209e7552f41f29d9a4261a50363811e5"
 PKG_LICENSE="OSS"
 PKG_SITE="https://github.com/gabomdq/SDL_GameControllerDB"
 PKG_URL="$PKG_SITE/archive/$PKG_VERSION.tar.gz"
-PKG_DEPENDS_TARGET=""
+PKG_DEPENDS_TARGET="toolchain"
 PKG_LONGDESC="A community sourced database of game controller mappings to be used with SDL2 Game Controller functionality"
 PKG_TOOLCHAIN="manual"
 
@@ -16,6 +16,7 @@ pre_configure_target() {
 sed -i "s/19000000010000000100000001010000,odroid/# 19000000010000000100000001010000,odroid/g" gamecontrollerdb.txt
 sed -i "s/19000000010000000200000011000000,odroid/# 19000000010000000200000011000000,odroid/g" gamecontrollerdb.txt
 sed -i "s/03000000d11800000094000011010000,Stadia Controller/# 03000000d11800000094000011010000,Stadia Controller/g" gamecontrollerdb.txt
+sed -i "s/030000004c0500006802000011810000,PS3 Controller/# 030000004c0500006802000011810000,PS3 Controller/g" gamecontrollerdb.txt
 }
 
 makeinstall_target() {

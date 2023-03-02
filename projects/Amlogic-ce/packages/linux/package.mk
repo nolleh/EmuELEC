@@ -25,8 +25,8 @@ case "$LINUX" in
     PKG_BUILD_PERF="no"
     ;;
   amlogic-4.9)
-    PKG_VERSION="e194bc3ea82ab0c5b6104f196c02b57bb29cfe62"
-    PKG_SHA256="c94a52d3a864073d4f9b07d581ae14f3f0d0162325cd18cfc5c8315f76f759c9"
+    PKG_VERSION="e16521915513ee82f9e95b73d4006a76400fdb66"
+    PKG_SHA256="f2765867fa91dc125aa04fddd1661793aa53cc5d129ffcbd18fcebdf18795543"
     PKG_URL="https://github.com/CoreELEC/linux-amlogic/archive/$PKG_VERSION.tar.gz"
     PKG_SOURCE_NAME="linux-$LINUX-$PKG_VERSION.tar.gz"
     PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET aml-dtbtools:host"
@@ -121,6 +121,15 @@ post_patch() {
   fi
 }
 
+post_unpack() {
+  # Add exFAT
+  ${SCRIPTS}/get exfat-linux
+  local PKG_BUILD_EXFAT="${PKG_BUILD}/fs/exfat"
+  [ -e "$PKG_BUILD_EXFAT" ] && rm -rf "$PKG_BUILD_EXFAT"
+  mkdir -p "$PKG_BUILD_EXFAT"
+  tar --strip-components=1 -xf "${SOURCES}/exfat-linux/exfat-linux-$(get_pkg_version exfat-linux).tar.gz" -C "$PKG_BUILD_EXFAT"
+}
+
 make_host() {
   make \
     ARCH=${HEADERS_ARCH:-$TARGET_KERNEL_ARCH} \
@@ -159,22 +168,6 @@ pre_make_target() {
     FW_LIST="$(find $PKG_BUILD/external-firmware \( -type f -o -type l \) \( -iname '*.bin' -o -iname '*.fw' -o -path '*/intel-ucode/*' \) | sed 's|.*external-firmware/||' | sort | xargs)"
     sed -i "s|CONFIG_EXTRA_FIRMWARE=.*|CONFIG_EXTRA_FIRMWARE=\"${FW_LIST}\"|" $PKG_BUILD/.config
   fi
-
-  # Add EXFat, from https://github.com/351ELEC/351ELEC/commit/5aac2680bb97a69e0e44e08760caeca9939ab461
-  PREEXF=`pwd`
-  cd ${PKG_BUILD}/fs
-  git clone https://github.com/arter97/exfat-linux.git
-  cd exfat-linux
-  git checkout old
-  cd ${PKG_BUILD}/fs
-  if [ -d "exfat" ]
-  then
-    rm -rf exfat
-  fi
-  mv exfat-linux exfat
-  sed -i '/source "fs\/fat\/Kconfig"/a source "fs\/exfat\/Kconfig"' Kconfig
-  sed -i '/obj-$(CONFIG_FAT_FS).*+= fat\//a obj-$(CONFIG_EXFAT_FS)\t\t+= exfat\/' Makefile
-  cd ${PREEXF}
 
   kernel_make oldconfig
 }

@@ -2,7 +2,7 @@
 # Copyright (C) 2019-present Shanti Gilbert (https://github.com/shantigilbert)
 
 PKG_NAME="PPSSPPSDL"
-PKG_VERSION="f8c219b7f687f4f1daa7eb81bc12f8c614d956c5"
+PKG_VERSION="d1e0061dcd27a134fce182201e59c885ffb8be0d"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="MAME"
@@ -16,7 +16,7 @@ PKG_BUILD_FLAGS="-lto"
 
 PKG_CMAKE_OPTS_TARGET+="-DUSE_SYSTEM_FFMPEG=ON \
                         -DUSING_FBDEV=ON \
-                        -DUSING_EGL=ON \
+                        -DUSING_EGL=OFF \
                         -DUSING_GLES2=ON \
                         -DUSING_X11_VULKAN=OFF \
                         -DUSE_DISCORD=OFF"

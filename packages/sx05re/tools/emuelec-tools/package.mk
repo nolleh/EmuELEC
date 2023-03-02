@@ -45,11 +45,12 @@ PKG_DEPENDS_TARGET+=" ffmpeg \
                       exfat \
                       351Files \
                       box64 \
-                      pygame \
                       iotop \
                       usb-modeswitch \
                       vim \
-                      rclone"
+                      rclone \
+                      grep \
+                      eemount"
 
 if [ "${PROJECT}" == "Amlogic-ce" ]; then
                       PKG_DEPENDS_TARGET+=" CoreELEC-Debug-Scripts"

@@ -2,7 +2,7 @@
 # Copyright (C) 2020-present Shanti Gilbert (https://github.com/shantigilbert)
 
 PKG_NAME="devilutionX"
-PKG_VERSION="4c7ecbe59137d7f9b49d1b1879223e426d12e1de"
+PKG_VERSION="98294e0ad57865331202b916e2f71cd7fa6c82ae"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="unlicense"
@@ -16,7 +16,7 @@ PKG_BUILD_FLAGS="-lto"
 pre_configure_target() {
 PKG_CMAKE_OPTS_TARGET=" -DCMAKE_BUILD_TYPE="Release" -DDEVILUTIONX_STATIC_CXX_STDLIB=OFF -DDISABLE_ZERO_TIER=ON -DBUILD_TESTING=OFF -DBUILD_ASSETS_MPQ=OFF -DDEBUG=OFF -DPREFILL_PLAYER_NAME=ON -DDEVILUTIONX_SYSTEM_LIBSODIUM=OFF"
 
-sed -i "s|assets/|assets_dvx/|" $PKG_BUILD/Source/utils/paths.cpp
+sed -i "s|\"assets\"\ DIRECTORY_SEPARATOR_STR|\"assets_dvx\"\ DIRECTORY_SEPARATOR_STR|" $PKG_BUILD/Source/utils/paths.cpp
 }
 
 makeinstall_target() { 

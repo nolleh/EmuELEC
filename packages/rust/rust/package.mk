@@ -2,8 +2,8 @@
 # Copyright (C) 2017-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="rust"
-PKG_VERSION="1.61.0"
-PKG_SHA256="ad0b4351675aa9abdf4c7e066613bd274c4391c5506db152983426376101daed"
+PKG_VERSION="1.66.1"
+PKG_SHA256="5b3c933a94c72187705d4ee293198babfdd09442f5937fbd685db3a81f4959ba"
 PKG_LICENSE="MIT"
 PKG_SITE="https://www.rust-lang.org"
 PKG_URL="https://static.rust-lang.org/dist/rustc-${PKG_VERSION}-src.tar.gz"

@@ -2,13 +2,13 @@
 # Copyright (C) 2019-present Shanti Gilbert (https://github.com/shantigilbert)
 
 PKG_NAME="stellasa"
-PKG_VERSION="42b6a29274459e792815a6816cbdb77b98108b06"
-PKG_SHA256="eca2989977e61c27a7b91c81ec2751bce7100d653ca65145f5be5264c4aab2e2"
+PKG_VERSION="bbbaced452be598a74b90ade2dbb76831338b422"
+PKG_SHA256="7293e285ab227a10eaaf1271f24310cdf751cef671e695bcf33f76503a683aa0"
 PKG_REV="1"
 PKG_LICENSE="GPL2"
 PKG_SITE="https://github.com/stella-emu/stella"
 PKG_URL="$PKG_SITE/archive/$PKG_VERSION.tar.gz"
-PKG_DEPENDS_TARGET="toolchain"
+PKG_DEPENDS_TARGET="toolchain SDL2"
 PKG_SHORTDESC="A multi-platform Atari 2600 Emulator"
 PKG_TOOLCHAIN="configure"
 

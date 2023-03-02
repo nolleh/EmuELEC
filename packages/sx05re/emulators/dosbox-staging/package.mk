@@ -2,7 +2,7 @@
 # Copyright (C) 2020-present Shanti Gilbert (https://github.com/shantigilbert)
 
 PKG_NAME="dosbox-staging"
-PKG_VERSION="748e323185018af6a6d5b6a6d07ee779ffe5a258"
+PKG_VERSION="b78d71a39ab7259ac26d2d0f22aac355af79ffdf"
 PKG_LICENSE="GPLv2"
 PKG_SITE="https://github.com/dosbox-staging/dosbox-staging"
 PKG_URL="$PKG_SITE.git"
@@ -19,6 +19,8 @@ export SSL_CERT_DIR=/etc/ssl/certs
 
 pre_configure_target() {
 PKG_MESON_OPTS_TARGET=" -Duse_opengl=false"
+sed -i "s|C_MANYMOUSE') == true)|C_MANYMOUSE') == false)|" ${PKG_BUILD}/meson.build
+sed -i "s|C_MANYMOUSE', true)|C_MANYMOUSE', false)|" ${PKG_BUILD}/meson.build
 }
 
 post_makeinstall_target () {
